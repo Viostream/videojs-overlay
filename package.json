@@ -45,9 +45,10 @@
   },
   "dependencies": {
     "global": "^4.4.0",
-    "video.js": "^7.13.3"
+    "video.js": "^6 || ^7"
   },
   "devDependencies": {
+    "@videojs/generator-helpers": "~2.0.2",
     "conventional-changelog-cli": "^2.1.1",
     "conventional-changelog-videojs": "^3.0.2",
     "doctoc": "^2.0.1",
@@ -100,10 +101,5 @@
       "npm run docs:toc",
       "git add"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   }
 }
