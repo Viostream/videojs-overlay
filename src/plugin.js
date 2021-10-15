@@ -36,8 +36,8 @@ const isNumber = n => typeof n === 'number' && n === n;
 /**
  * Whether a value is a string with no whitespace.
  *
- * @param  {String} s
- * @return {Boolean}
+ * @param  {string} s
+ * @return {boolean}
  */
 const hasNoWhitespace = s => typeof s === 'string' && (/^\S+$/).test(s);
 
@@ -51,6 +51,9 @@ class Overlay extends Component {
 
   constructor(player, options) {
     super(player, options);
+
+    // set to true initially so listener in event is added correctly
+    this.isVisible = true;
 
     ['start', 'end'].forEach(key => {
       const value = this.options_[key];
@@ -116,6 +119,7 @@ class Overlay extends Component {
 
   /**
    * Logs debug errors
+   *
    * @param  {...[type]} args [description]
    * @return {[type]}         [description]
    */
@@ -141,10 +145,21 @@ class Overlay extends Component {
    * @return {Overlay}
    */
   hide() {
+
+    // add check here to fix issue with rewind calling hide multiple times
+    if (this.isVisible === false) {
+      return;
+    }
     super.hide();
 
+    this.isVisible = false;
     this.debug('hidden');
     this.debug(`bound \`startListener_\` to "${this.startEvent_}"`);
+
+    // add event trigger
+    if (isNumber(this.options_.end)) {
+      this.trigger('hide-overlay', {id: this.options_.id, align: this.options_.align});
+    }
 
     // Overlays without an "end" are valid.
     if (this.endEvent_) {
@@ -160,11 +175,11 @@ class Overlay extends Component {
   /**
    * Determine whether or not the overlay should hide.
    *
-   * @param  {Number} time
+   * @param  {number} time
    *         The current time reported by the player.
-   * @param  {String} type
+   * @param  {string} type
    *         An event type.
-   * @return {Boolean}
+   * @return {boolean}
    */
   shouldHide_(time, type) {
     const end = this.options_.end;
@@ -179,9 +194,15 @@ class Overlay extends Component {
    */
   show() {
     super.show();
+    this.isVisible = true;
     this.off(this.player(), this.startEvent_, this.startListener_);
     this.debug('shown');
     this.debug(`unbound \`startListener_\` from "${this.startEvent_}"`);
+
+    // add event trigger
+    if (isNumber(this.options_.start)) {
+      this.trigger('show-overlay', {id: this.options_.id, align: this.options_.align});
+    }
 
     // Overlays without an "end" are valid.
     if (this.endEvent_) {
@@ -195,11 +216,11 @@ class Overlay extends Component {
   /**
    * Determine whether or not the overlay should show.
    *
-   * @param  {Number} time
+   * @param  {number} time
    *         The current time reported by the player.
-   * @param  {String} type
+   * @param  {string} type
    *         An event type.
-   * @return {Boolean}
+   * @return {boolean}
    */
   shouldShow_(time, type) {
     const start = this.options_.start;
@@ -302,6 +323,11 @@ videojs.registerComponent('Overlay', Overlay);
  */
 const plugin = function(options) {
   const settings = videojs.mergeOptions(defaults, options);
+
+  // pass false as argument to retrive the plugin object
+  if (options === false) {
+    return this;
+  }
 
   // De-initialize the plugin if it already has an array of overlays.
   if (Array.isArray(this.overlays_)) {
