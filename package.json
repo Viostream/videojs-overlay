@@ -40,8 +40,7 @@
     "watch": "npm-run-all -p watch:*",
     "watch:css": "npm run build:css -- -w",
     "watch:js": "npm run build:js -- -w",
-    "posttest": "shx cat test/dist/coverage/text.txt",
-    "prepublishOnly": "npm run build && vjsverify"
+    "posttest": "shx cat test/dist/coverage/text.txt"
   },
   "dependencies": {
     "global": "^4.4.0",
