@@ -10,7 +10,7 @@
     "videojs",
     "videojs-plugin"
   ],
-  "repository": "https://github.com/brightcove/videojs-overlay.git",
+  "repository": "https://github.com/viostream/videojs-overlay.git",
   "vjsstandard": {
     "ignore": [
       "dist",
