@@ -26,32 +26,30 @@
           start: 0,
           end: 5,
           align: 'bottom-left',
-          content: '<div data-id="A1" data-align="bottom-left">1st Overlay</div>'
+          cta_id: 'A1',
+          content: '<div data-cta-id="A1" data-cta-location="bottom-left">1st Overlay</div>'
         }, {
           start: 5,
           end: 10,
           align: 'bottom',
-          content: '<div data-id="B1" data-align="bottom">2nd Overlay</div>'
+          cta_id: 'B1',
+          content: '<div data-cta-id="B1" data-cta-location="bottom">2nd Overlay</div>'
         }, {
           start: 10,
           end: 15,
           align: 'bottom-right',
-          content: '<div data-id="C1" data-align="bottom-right">3rd Overlay</div>'
+          cta_id: 'C1',
+          content: '<div data-cta-id="C1" data-cta-location="bottom-right">3rd Overlay</div>'
         }]
       });
 
-      var overlayPlugin = player.overlay(false);
-      
-      for(var i=0; i < overlayPlugin.overlays_.length; i++)
-      {
-        overlayPlugin.overlays_[i].on('show-overlay', function(event) {
-          console.log('SHOW EVENT:' + event.target.firstChild.dataset.id + ' - ' + event.target.firstChild.dataset.align);
-        }); 
-     
-        overlayPlugin.overlays_[i].on('hide-overlay', function(event) {
-          console.log('HIDE EVENT:' + event.target.firstChild.dataset.id + ' - ' + event.target.firstChild.dataset.align);
-        }); 
-      }
+      player.on('show-overlay', function(event, data) {
+          console.log('SHOW EVENT:' + data.id + ' - ' + data.align);
+      }); 
+
+      player.on('hide-overlay', function(event, data) {
+          console.log('HIDE EVENT:' + data.id + ' - ' + data.align);
+      }); 
 
     }(window, window.videojs));
   </script>

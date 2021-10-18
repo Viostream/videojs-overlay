@@ -158,7 +158,7 @@ class Overlay extends Component {
 
     // add event trigger
     if (isNumber(this.options_.end)) {
-      this.trigger('hide-overlay', {id: this.options_.id, align: this.options_.align});
+      this.player().trigger('hide-overlay', {id: this.options_.cta_id, align: this.options_.align});
     }
 
     // Overlays without an "end" are valid.
@@ -201,7 +201,7 @@ class Overlay extends Component {
 
     // add event trigger
     if (isNumber(this.options_.start)) {
-      this.trigger('show-overlay', {id: this.options_.id, align: this.options_.align});
+      this.player().trigger('show-overlay', {id: this.options_.cta_id, align: this.options_.align});
     }
 
     // Overlays without an "end" are valid.
@@ -323,11 +323,6 @@ videojs.registerComponent('Overlay', Overlay);
  */
 const plugin = function(options) {
   const settings = videojs.mergeOptions(defaults, options);
-
-  // pass false as argument to retrive the plugin object
-  if (options === false) {
-    return this;
-  }
 
   // De-initialize the plugin if it already has an array of overlays.
   if (Array.isArray(this.overlays_)) {
