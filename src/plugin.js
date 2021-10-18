@@ -158,7 +158,9 @@ class Overlay extends Component {
 
     // add event trigger
     if (isNumber(this.options_.end)) {
-      this.player().trigger('hide-overlay', {id: this.options_.cta_id, align: this.options_.align});
+      if(!this.player().paused()) {
+        this.player().trigger('hide-overlay', {id: this.options_.cta_id, align: this.options_.align});
+      }
     }
 
     // Overlays without an "end" are valid.
@@ -201,7 +203,9 @@ class Overlay extends Component {
 
     // add event trigger
     if (isNumber(this.options_.start)) {
-      this.player().trigger('show-overlay', {id: this.options_.cta_id, align: this.options_.align});
+      if(!this.player().paused() || this.options_.start === 0) {
+        this.player().trigger('show-overlay', {id: this.options_.cta_id, align: this.options_.align});
+      }
     }
 
     // Overlays without an "end" are valid.
